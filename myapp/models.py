@@ -13,7 +13,7 @@ class Projecto(models.Model):
 class Task(models.Model):
     def __str__(self):
         return self.title + " - " + self.project.name
-
+    done = models.BooleanField(default=False)
     title = models.CharField(max_length=200)
     description = models.TextField()
     project = models.ForeignKey(Projecto, on_delete=models.CASCADE)

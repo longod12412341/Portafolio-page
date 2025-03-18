@@ -1,14 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse , JsonResponse
 from .models import Projecto , Task
-from django.shortcuts import get_object_or_404 , render
+from django.shortcuts import get_object_or_404 , render, redirect
+from .forms import CreateNewTask, CreateNewProjects
 # Create your views here.
-
-# Podemos concatenar nombres, numero e id 
-def hello(request, username): #En vez de usar username usamos id pero debemos cambiar el 
-    #el str de las urls a int, siempre debemos saber que tipo de datos le vamos a dar
-    print(username)
-    return HttpResponse("<h2>Hello %s</h2>" % username)
 
 def about(request):
     username = "longo"
@@ -23,14 +18,35 @@ def index(request):
     })
 
 
-def task(request, id):
-    get_object_or_404(Task, id=id)
-    return render(request, "tasks.html")
-    return HttpResponse("<h1>Tasks : %</h1>" % task.title )
+def task(request):
+    tasks = Task.objects.all()
+    return render(request, "tasks/tasks.html",{
+        "tasks" : tasks 
+    })
+    
     
 def projects(request):
-    return render(request, "projects.html")
-    projects = list(Projecto.objects.values())
-    return JsonResponse(projects, safe=False) 
-    
-    
+    projects = Projecto.objects.all()
+    return render(request, "projects/projects.html", {
+        "projects" : projects
+    })
+
+def create_task(request) :
+    if request.method == "GET":
+        return render(request, "tasks/create_task.html", {
+            "form" : CreateNewTask()
+        }) 
+    else:
+        Task.objects.create(title=request.POST["title"],
+        description=request.POST["description"], project_id=2)
+        return redirect("task")
+
+
+def Create_projects(request):
+    if request.method == "GET":
+        return render(request, "projects/create_projects.html",{
+            "form": CreateNewProjects()
+        })
+    else: 
+        Projecto.objects.create(name=request.POST["name"])
+        redirect("projects")

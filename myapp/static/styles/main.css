@@ -1,0 +1,24 @@
+body{
+    background: #202020 ;
+    color: aliceblue;
+}
+
+.navbar {
+    background: chocolate;
+    padding: 10px 0;
+
+}
+.navbar ul li{
+    list-style: none;
+}
+.navbar ul li a{
+    color: #000000;
+    text-decoration: none;
+}
+.navbar ul{
+    display: flex;
+    justify-content: space-between;
+}
+.navbar ul li a :hover{
+    color: aqua;
+}
